@@ -1,40 +1,41 @@
 var state = '';
 var food = '';
 
+var allOptionsList = [{"class":"state", "label":"States", "selectall":true}, {"class":"food", "label":"Food", "selectall":true} ];
 $(function () {
-
-    $('select[multiple].active.3col.state').multiselect({
-        columns: 6,
-        placeholder: 'Select States',
-        search: true,
-        searchOptions: {
-            'default': 'Search States'
-        },
-        selectAllITV: true,
-        applyQuery: false,
-        resetITVQuery: true,//Added for reset
-    });
-
-    $('select[multiple].active.3col.food').multiselect({
-        columns: 6,
-        placeholder: 'Select food',
-        search: true,
-        searchOptions: {
-            'default': 'Search Food'
-        },
-        selectAllITV: true,
-        applyQuery: false,
-        resetITVQuery: true,
-    });
-
+	
+	$(allOptionsList).each(function(index, data){
+		var _action = data.class;
+		var _label = data.label;
+		var _selectall = data.selectall;
+		if (_selectall === true){
+			_selectall = true;
+		}
+		else{
+			_selectall = false;
+		}
+		
+		$('select[multiple].active.3col.' + _action).multiselect({
+			columns: 6,
+			placeholder: 'Select ' + _label,
+			search: true,
+			searchOptions: {
+				'default': 'Search ' + _label,
+			},
+			selectAllITV: _selectall,
+			applyQuery: true,
+			resetITVQuery: true,//Added for reset
+		});
+	});
+     
     setTimeout(function () {
-        $(".ms-selectall").after(" <a class='ms-applyQuery' href='javascript:;'>Save</a> ");
-        getOnClickSave();
+        //$(".ms-selectall").after(" <a class='ms-applyQuery' href='javascript:;'>Save</a> ");
+        //getOnClickSave();
     }, 100);
 
     setTimeout(function () {
-        $(".ms-applyQuery").after(" <a class='ms-reset' href='javascript:;'>Reset</a> ");
-        getOnClickReset();
+        //$(".ms-applyQuery").after(" <a class='ms-reset' href='javascript:;'>Reset</a> ");
+        //getOnClickReset();
     }, 100);
 });
 
@@ -101,42 +102,7 @@ function getData(currentId) {
 
 
 }
-
-function setNewFood(data) {
-    /*var options = [{
-            name: 'Option 1',
-            value: 1,
-            checked: false
-        }, {
-            name: 'Option 2',
-            value: 2,
-            checked: true
-        }, {
-            name: 'Option 3',
-            value: 3,
-            checked: false
-        }, {
-            name: 'Option 4',
-            value: 4,
-            checked: true
-        }, {
-            name: 'Option 5',
-            value: 5,
-            checked: false
-        }];*/
-    var options = 
-    $('select[multiple].active.3col.food').multiselect('loadOptions', options, {
-        columns: 6,
-        placeholder: 'Select food',
-        search: true,
-        searchOptions: {
-            'default': 'Search Food'
-        },
-        selectAllITV: true,
-        applyQuery: false,
-    });
-}
-
+ 
 function getState() {
     $.ajax({
         url: "data.php",
@@ -155,7 +121,7 @@ function getState() {
 }
 
 function callSaveNow(ids, currentId){
-	alert(ids + " , " + currentId);
+	alert('In callSaveNow : ' +  ids + " , " + currentId);
 }
 
 function callResetQuery(currentId){	

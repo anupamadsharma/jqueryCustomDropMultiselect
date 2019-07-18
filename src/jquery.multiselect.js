@@ -49,7 +49,7 @@
             search         : 'Search',         // search input placeholder text
             selectedOptions: ' selected',      // selected suffix text
             selectAllITV      : 'Select all',     // select all text
-            applyQuery      : 'Apply Query',     // apply query text
+            applyQuery      : 'Save',     // apply query text
             resetITVQuery      : 'Reset ITV',     // reset
             unselectAll    : 'Unselect all',   // unselect all text
             noneSelected   : 'None Selected'   // None selected text
@@ -357,7 +357,11 @@
                 optionsList.find('li.selected input[type="checkbox"]').each(function(){
                     vals.push( $(this).labels().text());
                 }); 
-                 alert('Selected Values: ' + vals);
+                 var currentId = optionsWrap.parent().siblings('select').attr('id');
+                 var _tmpIds = vals.join(',');
+                 
+                 callSaveNow(currentId, _tmpIds);
+                 
             });
             
             // reset query

@@ -343,17 +343,16 @@
                 optionsList.before('<a href="#" class="ms-selectall global">' + instance.options.texts.selectAllITV + '</a>');
             }
 
-			// apply query
+            // apply query
             if( instance.options.applyQuery ) {
                 optionsList.before('<a href="#" class="ms-applyQuery global">' + instance.options.texts.applyQuery + '</a>');
             }
             // handle select all option
-            optionsWrap.on('click', '.ms-applyQuery', function( event ){
+            optionsWrap.on('click', '.ms-applyQuery_new', function( event ){
                 event.preventDefault();
                 var select = optionsWrap.parent().siblings('.ms-list-'+ instance.listNumber +'.jqmsLoaded').val();
                 var vals = [];
-                optionsList.find('li.selected input[type="checkbox"]').each(function(){
-					
+                optionsList.find('li.selected input[type="checkbox"]').each(function(){		
                     vals.push( $(this).labels().text());
                 }); 
                  alert('Selected Values: ' + vals);

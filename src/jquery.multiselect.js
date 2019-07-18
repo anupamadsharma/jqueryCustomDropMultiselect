@@ -50,6 +50,7 @@
             selectedOptions: ' selected',      // selected suffix text
             selectAllITV      : 'Select all',     // select all text
             applyQuery      : 'Apply Query',     // apply query text
+            resetITVQuery      : 'Reset ITV',     // reset
             unselectAll    : 'Unselect all',   // unselect all text
             noneSelected   : 'None Selected'   // None selected text
         },
@@ -57,6 +58,7 @@
         // general options
         selectAllITV       : false, // add select all option
         applyQuery       : false, // apply query
+        resetITVQuery       : false, // reset
         selectGroup        : false, // select entire optgroup
         minHeight          : 200,   // minimum height of option overlay
         maxHeight          : null,  // maximum height of option overlay
@@ -343,7 +345,7 @@
                 optionsList.before('<a href="#" class="ms-selectall global">' + instance.options.texts.selectAllITV + '</a>');
             }
 
-			// apply query
+            // apply query
             if( instance.options.applyQuery ) {
                 optionsList.before('<a href="#" class="ms-applyQuery global">' + instance.options.texts.applyQuery + '</a>');
             }
@@ -353,10 +355,47 @@
                 var select = optionsWrap.parent().siblings('.ms-list-'+ instance.listNumber +'.jqmsLoaded').val();
                 var vals = [];
                 optionsList.find('li.selected input[type="checkbox"]').each(function(){
-					
                     vals.push( $(this).labels().text());
                 }); 
                  alert('Selected Values: ' + vals);
+            });
+            
+            // reset query
+            if( instance.options.resetITVQuery ) {
+                optionsList.before('<a href="#" class="ms-resetITV global">' + instance.options.texts.resetITVQuery + '</a>');
+            }
+            // handle reset query
+            optionsWrap.on('click', '.ms-resetITV', function( event ){
+				event.preventDefault();
+				instance.updateSelectAll   = false;
+				instance.updatePlaceholder = false;
+
+                var select = optionsWrap.parent().siblings('.ms-list-'+ instance.listNumber +'.jqmsLoaded');
+
+                if( $(this).hasClass('global') ) { 
+					optionsList.find('li:not(.optgroup, .ms-hidden).selected').removeClass('selected');
+					optionsList.find('li:not(.optgroup, .ms-hidden, .selected) input[type="checkbox"]:not(:disabled)').prop( 'checked', false ); 
+                }
+                var currentId = optionsWrap.parent().siblings('select').attr('id');
+				var vals = [];
+                optionsList.find('li.selected input[type="checkbox"]').each(function(){
+                    vals.push( $(this).val() );
+                });
+                select.val( vals ).trigger('change');
+
+                instance.updateSelectAll   = true;
+                instance.updatePlaceholder = true;
+
+                // USER CALLBACK
+                if( typeof instance.options.onSelectAll == 'function' ) {
+                    instance.options.onSelectAll( instance.element, vals.length );
+                }
+
+                instance._updateSelectAllText();
+                instance._updatePlaceholderText();
+                
+                callResetQuery(currentId);
+                
             });
             
             // handle select all option
@@ -754,7 +793,7 @@
             // load element
             this.load();
         },
-
+		
         // RESET BACK TO DEFAULT VALUES & RELOAD
         reset: function() {
             var defaultVals = [];
@@ -776,7 +815,7 @@
                 .prop( 'disabled', status );
         },
 
-        /** PRIVATE FUNCTIONS **/
+        /** PRIVATE FUNCTIONS **/ 
         // update the un/select all texts based on selected options and visibility
         _updateSelectAllText: function(){
             if( !this.updateSelectAll ) {

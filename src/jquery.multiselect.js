@@ -470,6 +470,26 @@
             optionsWrap.on( 'click', 'input[type="checkbox"]', function(){
                 $(this).closest( 'li' ).toggleClass( 'selected' );
 
+                /**Added for single selection - start */
+                
+                var currentId = optionsWrap.parent().siblings('select').attr('id');
+                var vals = [];
+                optionsList.find('li.selected input[type="checkbox"]').each(function(){
+                    vals.push( $(this).val() );
+                });
+                
+                if (currentId == 'food'){
+                    if (vals.length > 1){
+                        alert('Single selection allowed');
+                        if ($(this).is(':checked')){
+                            $(this).prop("checked", false);
+                            $(this).closest( 'li' ).toggleClass( 'selected' );
+                        }
+                        return true;
+                    }
+                } 
+                /**Added for single selection - end */
+                
                 var select = optionsWrap.parent().siblings('.ms-list-'+ instance.listNumber +'.jqmsLoaded');
 
                 // toggle clicked option

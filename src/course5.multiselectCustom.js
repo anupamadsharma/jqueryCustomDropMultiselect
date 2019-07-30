@@ -1,3 +1,4 @@
+var valsFoodIds = []; 
 var state = '';
 var food = '';
 
@@ -23,20 +24,46 @@ $(function () {
 				'default': 'Search ' + _label,
 			},
 			selectAllITV: _selectall,
+                        selectall: _selectall,
 			applyQuery: true,
 			resetITVQuery: true,//Added for reset
 		});
 	});
+        
+ /* $( "select" ).change(function () {
+    var str = "";
+    alert('uuu');
+    $( "select option:selected" ).each(function() {
+      str += $( this ).text() + " ";
+    });
+    $( "div" ).text( str );
+  })
+  .change();*/
      
     setTimeout(function () {
-        //$(".ms-selectall").after(" <a class='ms-applyQuery' href='javascript:;'>Save</a> ");
-        //getOnClickSave();
+        $(".ms-selectall").after(" <a class='ms-applyQuery' href='javascript:;'><button style='color:red; font-color:white;' >Click me</button></a> ");
+        getOnClickSave();
     }, 100);
 
     setTimeout(function () {
         //$(".ms-applyQuery").after(" <a class='ms-reset' href='javascript:;'>Reset</a> ");
         //getOnClickReset();
     }, 100);
+});
+
+function getoptionValue(currentId, vals){
+    alert(currentId+""+ vals);
+}
+$( "#food" ).change(function() {
+  alert( "Handler for .change() called." );
+});
+
+
+var _obj = $('#ms-list-2 .ms-potions ul li input[checkbox]').siblings('div').find('.ms-search');
+ $('#ms-list-2').change(function () {
+     var optionSelected = $(this).find("option:selected");
+     var valueSelected  = optionSelected.val();
+    alert(valueSelected);
 });
 
 
@@ -126,4 +153,9 @@ function callSaveNow(ids, currentId){
 
 function callResetQuery(currentId){	
 	alert('In reset : ' + currentId);	
+}
+
+
+function logOnConsole(msg){
+    console.log(msg);
 }

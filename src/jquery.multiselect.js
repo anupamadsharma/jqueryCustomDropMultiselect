@@ -100,9 +100,18 @@
         this.updateSelectAll   = true;
         this.updatePlaceholder = true;
         this.listNumber        = msCounter;
-
+        
+        /** Added to remove link from default html - start **/
+        var _intanceSelectId  = $(this.element).attr('id');
+        if (_intanceSelectId == 'food'){
+            this.options.applyQuery = false;
+            this.options.selectAllITV = false;
+            this.options.selectall = false;
+            this.options.resetITVQuery = false;
+        }
+        /** Added to remove link from default html - end **/        
         msCounter = msCounter + 1; // increment counter
-
+        
         /* Make sure its a multiselect list */
         if( !$(this.element).attr('multiple') ) {
             throw new Error( '[jQuery-MultiSelect] Select list must be a multiselect list in order to use this plugin' );
